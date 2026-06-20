@@ -1,0 +1,75 @@
+section .data
+    array1 db 2, 4, 6, 8, 10, 20, 40 ; Declare array1
+    array2 db 0, 0, 0, 0, 0, 0, 0    ; Declare array2
+    len equ 7                       ; Length of the arrays
+    msg1 db "array1: ", 0
+    msg2 db "array2: ", 0
+    newline db 0xA, 0
+
+section .bss
+
+section .text
+    global _start
+
+_start:
+    ; Print array1
+    mov edx, len
+    mov esi, array1
+    mov ecx, msg1
+    call print_array
+
+    ; Multiply array1 elements by 5 and store in array2
+    mov ecx, 0               ; Index
+multiply_loop:
+    cmp ecx, len
+    jge multiply_done
+    movzx eax, byte [array1 + ecx]
+    imul eax, 5
+    mov [array2 + ecx], al
+    inc ecx
+    jmp multiply_loop
+multiply_done:
+
+    ; Print array2
+    mov edx, len
+    mov esi, array2
+    mov ecx, msg2
+    call print_array
+
+    ; Exit program
+    mov eax, 60
+    xor edi, edi
+    syscall
+
+; Procedure to print an array
+print_array:
+    ; Print label
+    mov eax, 1
+    mov edi, 1
+    mov rsi, ecx
+    mov edx, 8               ; Length of "arrayX: "
+    syscall
+
+    ; Print array elements
+    mov ecx, edx
+print_element:
+    cmp ecx, 0
+    je print_done
+    movzx eax, byte [esi]
+    add eax, '0'
+    mov [rsp - 1], al
+    mov eax, 1
+    mov edi, 1
+    lea rsi, [rsp - 1]
+    mov edx, 1
+    syscall
+    dec ecx
+    inc esi
+print_done:
+    ; Print newline
+    mov eax, 1
+    mov edi, 1
+    mov rsi, newline
+    mov edx, 1
+    syscall
+    ret

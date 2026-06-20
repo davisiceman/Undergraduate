@@ -1,0 +1,6 @@
+test
+word
+list
+for
+exercise
+hello

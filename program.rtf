@@ -1,0 +1,87 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 section .data\
+    msg1 db "A program to add two numbers", 10\
+    num1 db "Value of the first Integer Number is ", 0\
+    num2 db "Value of the second Integer Number is ", 0\
+    sumMsg db "Sum of the two numbers is ", 0\
+\
+section .bss\
+    int1 resb 4\
+    int2 resb 4\
+    sum resb 4\
+\
+section .text\
+    global _start\
+\
+_start:\
+    ; Print initial message\
+    mov eax, 4\
+    mov ebx, 1\
+    mov ecx, msg1\
+    mov edx, 30\
+    int 0x80\
+\
+    ; Set values of int1 and int2\
+    mov dword [int1], 25\
+    mov dword [int2], 13\
+\
+    ; Display value of int1\
+    mov eax, 4\
+    mov ebx, 1\
+    mov ecx, num1\
+    mov edx, 32\
+    int 0x80\
+\
+    ; Print value of int1\
+    mov eax, [int1]\
+    add eax, '0'\
+    mov [sum], eax\
+    mov ecx, sum\
+    mov edx, 1\
+    int 0x80\
+\
+    ; Display value of int2\
+    mov eax, 4\
+    mov ebx, 1\
+    mov ecx, num2\
+    mov edx, 32\
+    int 0x80\
+\
+    ; Print value of int2\
+    mov eax, [int2]\
+    add eax, '0'\
+    mov [sum], eax\
+    mov ecx, sum\
+    mov edx, 1\
+    int 0x80\
+\
+    ; Calculate sum of int1 and int2\
+    mov eax, [int1]\
+    add eax, [int2]\
+    mov [sum], eax\
+\
+    ; Display sum message\
+    mov eax, 4\
+    mov ebx, 1\
+    mov ecx, sumMsg\
+    mov edx, 30\
+    int 0x80\
+\
+    ; Print sum\
+    mov eax, [sum]\
+    add eax, '0'\
+    mov [sum], eax\
+    mov ecx, sum\
+    mov edx, 1\
+    int 0x80\
+\
+    ; Exit\
+    mov eax, 1\
+    int 0x80\
+}
